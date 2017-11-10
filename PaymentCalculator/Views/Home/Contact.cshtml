@@ -1,0 +1,172 @@
+﻿@{
+    ViewBag.Title = "Payment Calculator";
+}
+
+<title>@ViewBag.Title</title>
+
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+
+    .button1 {
+        border-radius: 2px;
+    }
+
+    .button2 {
+        border-radius: 4px;
+    }
+
+    .button3 {
+        border-radius: 8px;
+    }
+
+    .button4 {
+        border-radius: 12px;
+    }
+
+    .button5 {
+        border-radius: 50%;
+    }
+</style>
+<div>
+    
+    <fieldset>
+       
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+
+                    <button id="btnShowModal" type="button"
+                            class="btn btn-sm btn-default pull-left col-lg-11 button button4">
+                        Calculate
+                    </button>
+
+                    <div class="modal fade" tabindex="-1" id="paymentModal"
+                         data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        ×
+                                    </button>
+                                    <h4 class="modal-title">Monthly Payment</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        
+                                        <div class="editor-label">
+                                            @Html.Label("Amount")
+                                        </div>
+                                        <div class="editor-field">
+                                            <input class="form-control" type="text"
+                                                   placeholder="Amount" id="Amount" /> 
+                                        </div>
+                                        <div class="editor-label">
+                                            @Html.Label("Downpayment")
+                                        </div>
+                                        <div class="editor-field">
+                                            <input class="form-control" type="text"
+                                                   placeholder="Down Payment" id="DownPayment"   /> 
+                                        </div>
+                                        <div class="editor-label">
+                                            @Html.Label("Down payment Percentage")
+                                        </div>
+                                        <div class="editor-field">
+                                            <input class="form-control" type="text"
+                                                   placeholder="Down Payment Percentage" id="DownPaymentPer" onchange="CalculateDownPayment(this)" /> 
+                                        </div>
+                                        <div class="editor-label">
+                                            @Html.Label("Rate")
+                                        </div>
+                                        <div class="editor-field">
+                                            <select class="form-control" id="Rate" name="Rate">
+                                                <option>Select Rate</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="editor-label">
+                                            @Html.Label("Year")
+                                        </div>
+                                        <div class="editor-field">
+                                            <select class="form-control" id="Year" name="Year">
+                                                <option>Select Year</option>
+                                                <option>15</option>
+                                                <option>20</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+                                <span id="result"></span>
+                                <div class="modal-footer">
+                                   
+                                    <button type="button" id="btnHideModal" class="btn btn-primary button button4">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+<footer>
+    <p style="background-color: Yellow; font-weight: bold; color:blue; text-align: center; font-style: oblique">
+        ©
+        <script> document.write(new Date().toDateString()); </script>
+    </p>
+</footer>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#btnShowModal").click(function () {
+                $("#paymentModal").modal('show');
+            });
+
+            $("#btnHideModal").click(function () {
+                $("#paymentModal").modal('hide');
+            });
+        });
+
+        function CalculateDownPayment(e) {
+            var amount = $("#Amount").val();
+            
+            $("#DownPayment").val((amount * e.value) / 100);
+
+
+            result();
+        }
+
+
+
+        function result() {
+            var amount = $("#Amount").val();
+            var DownPayment = $("#DownPayment").val();
+            var amount = $("#Amount").val();
+            var finalresult=0;
+            if (amount != null && amount != undefined && DownPayment != null) {
+                finalresult = amount / 10;
+            }
+
+            $("#result").text(finalresult);
+        }
+
+</script>  
