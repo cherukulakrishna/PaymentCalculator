@@ -6,7 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+   
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -36,22 +36,55 @@
                 <div id="wrapper" class="toggled">
                     <div id="sidebar-wrapper">
                         <div id="MainMenu">
+                            @Html.Label("Sort By:")
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select class="form-control" id="sort" name="sort" style="width:150px" onchange="sortchange(this)">
+                                        <option value="MOST">Most Popular</option>
+                                        <option value="NM">Name</option>
+
+                                    </select>
+                                </div>
+                                <div id="ascdrop" hidden="hidden" class="col-md-6">
+                                    <select class="form-control" style="width:100px" id="ascdrop" name="ascdrop">
+                                        <option value="A">ASC</option>
+                                        <option value="D">DSC</option>
+
+                                    </select>
+                                </div>
+                            </div>
                             <div class="list-group panel">
-                                <a href="#demo1" class="list-group-item list-group-item-success strong" style="background: #f7f7f7;" data-toggle="collapse" ><i class="fa fa-photo"></i> Bed <i class="fa fa-caret-down"></i></a>
+                            
+                                
+                                 
+                                
+                                <a href="#demo1" class="list-group-item list-group-item-success strong" style="background: #f7f7f7;" data-toggle="collapse"><i class="fa fa-photo"></i> Bed <i class="fa fa-caret-down"></i></a>
                                 <div class="collapse list-group-submenu" id="demo1">
                                     <a href="#" class="list-group-item"><input type="checkbox">&nbsp; 1</a>
                                     <a href="#" class="list-group-item"><input type="checkbox">&nbsp; 2</a>
                                     <a href="#" class="list-group-item"><input type="checkbox">&nbsp; 3</a>
                                     <a href="#" class="list-group-item"><input type="checkbox">&nbsp; 4</a>
                                 </div>
-                                <a href="#demo2" class="list-group-item list-group-item-success strong" style="background: #f7f7f7;" data-toggle="collapse" ><i class="fa fa-photo"></i> Bath <i class="fa fa-caret-down"></i></a>
+                                <a href="#demo2" class="list-group-item list-group-item-success strong" style="background: #f7f7f7;" data-toggle="collapse"><i class="fa fa-photo"></i> Bath <i class="fa fa-caret-down"></i></a>
                                 <div class="collapse list-group-submenu" id="demo2">
                                     <a href="#" class="list-group-item"><input type="checkbox">&nbsp; 1</a>
                                     <a href="#" class="list-group-item"><input type="checkbox">&nbsp; 2</a>
                                     <a href="#" class="list-group-item"><input type="checkbox">&nbsp; 3</a>
                                     <a href="#" class="list-group-item"><input type="checkbox">&nbsp; 4</a>
                                 </div>
-                            </div>
+                                <a href="#demo3" class="list-group-item list-group-item-success strong" style="background: #f7f7f7;" data-toggle="collapse"><i class="fa fa-photo"></i> Price <i class="fa fa-caret-down"></i></a>
+                                <div class="collapse list-group-submenu" id="demo3">
+                                    <div data-role="rangeslider">
+                                        
+                                        <input  type="range" name="price-min" id="price-min" value="200" min="0" max="1000">
+                                       
+                                        <input type="range" name="price-max" id="price-max" value="800" min="0" max="1000">
+                                    </div>
+
+                                    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                                    <div id="slider-range"></div>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -71,3 +104,33 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+    function sortchange(e) {
+        if (e.value != "MOST") {
+            $("#ascdrop").show();
+
+        }
+        else {
+
+            $("#ascdrop").hide();
+        }
+    }
+
+    $(function () {
+        $("#slider-range").slider({
+            range: true,
+            min: 0,
+            max: 500,
+            values: [75, 300],
+            slide: function (event, ui) {
+                $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+            }
+        });
+        $("#amount").val("$" + $("#slider-range").slider("values", 0) +
+          " - $" + $("#slider-range").slider("values", 1));
+    });
+
+</script>
