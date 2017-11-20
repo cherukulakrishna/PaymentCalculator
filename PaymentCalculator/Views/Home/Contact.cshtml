@@ -1,17 +1,36 @@
-﻿@{
+﻿@*@model PublicSiteBLL.DataClasses.Elevation*@
+@{
     ViewBag.Title = "Payment Calculator";
 }
-
 <title>@ViewBag.Title</title>
 
-<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
 <style>
+    .validation-summary-errors
+ {
+    
+  
+	color:#bf2c11; 
+	
+ }
+ 
+ 
+ .RequiredLabel
+ {
+     color:Red;
+     font-family:Helvetica;
+     font-weight:bold;
+     /*font-size:medium;*/  
+     font-size: medium;  
+     text-align:justify;
+     margin-top:40px;
+     
+ }
+
     .button {
-        background-color: #4CAF50; /* Green */
+        background-color: black; /* orange */
         border: none;
         color: white;
-        padding: 15px 32px;
+        padding: 10px 15px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
@@ -20,153 +39,400 @@
         cursor: pointer;
     }
 
-    .button1 {
-        border-radius: 2px;
-    }
-
-    .button2 {
-        border-radius: 4px;
-    }
-
-    .button3 {
-        border-radius: 8px;
-    }
-
     .button4 {
         border-radius: 12px;
     }
 
-    .button5 {
-        border-radius: 50%;
+    .zsg-layout-ab-a, .zsg-layout-ab-b, .zsg-layout-abc-a, .zsg-layout-abc-b, .zsg-layout-abc-c, .zsg-layout-bc-b, .zsg-layout-bc-c, .zsg-lg-1, .zsg-lg-1-1, .zsg-lg-1-2, .zsg-lg-1-3, .zsg-lg-1-4, .zsg-lg-1-5, .zsg-lg-2-3, .zsg-lg-2-5, .zsg-lg-3-4, .zsg-lg-3-5, .zsg-lg-4-5, .zsg-md-1, .zsg-md-1-1, .zsg-md-1-2, .zsg-md-1-3, .zsg-md-1-4, .zsg-md-1-5, .zsg-md-1-6, .zsg-md-2-3, .zsg-md-2-5, .zsg-md-3-4, .zsg-md-3-5, .zsg-md-4-5, .zsg-md-5-12, .zsg-md-7-12, .zsg-sm-1, .zsg-sm-1-1, .zsg-sm-1-2, .zsg-sm-1-3, .zsg-sm-1-4, .zsg-sm-1-5, .zsg-sm-2-3, .zsg-sm-2-5, .zsg-sm-3-4, .zsg-sm-3-5, .zsg-sm-4-5 {
+        display: inline-block;
+        letter-spacing: normal;
+        word-spacing: normal;
+        vertical-align: top;
+        text-rendering: auto;
+        font-family: Gotham,gotham,Verdana,sans-serif;
+        box-sizing: border-box;
+        padding: 0 10px;
+    }
+
+    .zsg-form-field {
+        margin-bottom: 15px;
+    }
+
+        .zsg-form-field .zsg-form-label, .zsg-form-field label {
+            display: block;
+            padding-bottom: 3px;
+        }
+
+    .zsg-input-overlay_left, .zsg-input-overlay_right {
+        position: relative;
+    }
+
+    *, :after, :before {
+        box-sizing: border-box;
+    }
+
+    .zsg-input-overlay_left .zsg-input-overlay-text_left, .zsg-input-overlay_right .zsg-input-overlay-text_left {
+        left: 9px;
+    }
+
+    .zsg-input-overlay_left .zsg-input-overlay-text_left, .zsg-input-overlay_left .zsg-input-overlay-text_right, .zsg-input-overlay_right .zsg-input-overlay-text_left, .zsg-input-overlay_right .zsg-input-overlay-text_right {
+        position: absolute;
+        top: 8px;
+        color: #999;
+        speak: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .zsg-input-overlay_right .zsg-input-overlay-text_right {
+        right: 9px;
+    }
+
+    .downPercent, .propertyTaxRate {
+        width: 35%;
+        display: inline-block;
+    }
+
+    .zsg-input-overlay_left input {
+        padding-left: 22px;
+    }
+
+    input, select {
+        height: 30px;
+        background-color: white;
+    }
+
+    input, textarea {
+        line-height: 1.5em;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 4px 6px 2px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        box-shadow: inset 0 2px 2px #f4f4f4, 0 0 0 #7fb9f1;
+    }
+
+    button, input, optgroup, select, textarea {
+        color: inherit;
+        font: inherit;
+        margin: 0;
+    }
+
+    #modalDialog {
+        width: 350px;
+    }
+
+    #btnShowModal {
+        cursor: pointer;
+    }
+
+    #Year, #Rate {
+        background-color: white;
+        width: 100px;
+        font-size: 16px;
+    }
+
+    input {
+        font-size: 16px !important;
     }
 </style>
-<div>
-    
+@*<div class="basic-red">*@
+
+<div class="">
+
     <fieldset>
-       
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
 
-                    <button id="btnShowModal" type="button"
-                            class="btn btn-sm btn-default pull-left col-lg-11 button button4">
-                        Calculate
-                    </button>
+        <div id="btnShowModal" type="button" class="hmPDFLink" style="margin-left:20px;">
+            Payment Calc
+        </div>
+        <div class="modal fade" tabindex="-1" id="paymentModal"
+             data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog " id="modalDialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            ×
+                        </button>
+                        <h2 class="modal-title">Mortgage Estimator</h2>
+                    </div>
+                    <div class="modal-body">
+                        <form name="paymentform">
 
-                    <div class="modal fade" tabindex="-1" id="paymentModal"
-                         data-keyboard="false" data-backdrop="static">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">
-                                        ×
-                                    </button>
-                                    <h4 class="modal-title">Monthly Payment</h4>
+                            @Html.ValidationSummary(false, "")
+                            <div id="divClient" class="validation-summary-errors" style="display: none; width: 50%">
+                                <ul></ul>
+                            </div>
+                            <div class="zsg-form-field">
+                                @Html.Label("Amount")
+                                <div class="zsg-input-overlay_left inputs-homePrice">
+                                    <div class="zsg-input-overlay-text_left">$</div>
+                                    <input class="form-control" type="text" style="width:300px;"
+                                           placeholder="Amount" id="Amount" onchange="CalculateDownPayment(document.getElementById('DownPaymentPer').value)" />
                                 </div>
-                                <div class="modal-body">
-                                    <form>
-                                        
-                                        <div class="editor-label">
-                                            @Html.Label("Amount")
-                                        </div>
-                                        <div class="editor-field">
-                                            <input class="form-control" type="text"
-                                                   placeholder="Amount" id="Amount" /> 
-                                        </div>
-                                        <div class="editor-label">
-                                            @Html.Label("Downpayment")
-                                        </div>
-                                        <div class="editor-field">
-                                            <input class="form-control" type="text"
-                                                   placeholder="Down Payment" id="DownPayment"   /> 
-                                        </div>
-                                        <div class="editor-label">
-                                            @Html.Label("Down payment Percentage")
-                                        </div>
-                                        <div class="editor-field">
-                                            <input class="form-control" type="text"
-                                                   placeholder="Down Payment Percentage" id="DownPaymentPer" onchange="CalculateDownPayment(this)" /> 
-                                        </div>
-                                        <div class="editor-label">
-                                            @Html.Label("Rate")
-                                        </div>
-                                        <div class="editor-field">
-                                            <select class="form-control" id="Rate" name="Rate">
-                                                <option>Select Rate</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                            </select>
-                                        </div>
 
-                                        <div class="editor-label">
-                                            @Html.Label("Year")
-                                        </div>
-                                        <div class="editor-field">
-                                            <select class="form-control" id="Year" name="Year">
-                                                <option>Select Year</option>
-                                                <option>15</option>
-                                                <option>20</option>
-                                            </select>
-                                        </div>
-                                    </form>
-                                </div>
-                                <span id="result"></span>
-                                <div class="modal-footer">
-                                   
-                                    <button type="button" id="btnHideModal" class="btn btn-primary button button4">
-                                        Cancel
-                                    </button>
+                            </div>
+                            <div class="zsg-form-field">
+                                @Html.Label("Down Payment")
+                                <div class="zsg-input-overlay_left inputs-homePrice">
+                                    <div class="zsg-input-overlay-text_left">
+                                        $
+                                    </div>
+                                    <input style="width:150px; float:left;" class="form-control" type="text"
+                                           placeholder="Down Payment" id="DownPayment" onchange="inverseCalculateDownPayment(this.value)" />
+                                    <div class="zsg-input-overlay_right downPercent">
+                                        <input style="width:150px" class="form-control" type="text"
+                                               placeholder="Down Payment Percentage" id="DownPaymentPer" onchange="CalculateDownPayment(this.value)" />
+                                        <div class="zsg-input-overlay-text_right">%</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="form-group" style="float:left;">
+                                @Html.Label("Rate")
+
+                                <select class="form-control" id="Rate" name="Rate" onchange="Interestchange()">
+                                    <option>3.00</option>
+                                    <option>3.25</option>
+                                    <option>3.50</option>
+                                    <option>3.75</option>
+                                    <option>4.00</option>
+                                    <option>4.25</option>
+                                    <option>4.50</option>
+                                    <option>4.75</option>
+                                    <option>5.00</option>
+                                    <option>5.25</option>
+                                    <option>5.50</option>
+                                    <option>5.75</option>
+                                    <option>6.00</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="float:left; margin-left:50px;">
+                                @Html.Label("Year")
+
+                                <select class="form-control" id="Year" name="Year" onchange="Interestchange()">
+                                    <option>15</option>
+                                    <option>20</option>
+                                    <option>30</option>
+                                </select>
+                            </div>
+                            <div style="clear:both"></div>
+                        </form>
                     </div>
 
+                    <h2> Monthly Payment</h2>
+                    <h2 id="Result" style="margin-top:-5px"></h2>
+                    <div class="modal-footer">
+
+                        <button type="button" id="btnHideModal" class="btn btn-primary button button4">
+                            Close
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+
     </fieldset>
 </div>
-<footer>
-    <p style="background-color: Yellow; font-weight: bold; color:blue; text-align: center; font-style: oblique">
-        ©
-        <script> document.write(new Date().toDateString()); </script>
-    </p>
-</footer>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="/Scripts/jquery-1.10.2.js"></script>
+
+<script src="/Scripts/bootstrap.js"></script>
 <script type="text/javascript">
 
-        $(document).ready(function () {
-            $("#btnShowModal").click(function () {
-                $("#paymentModal").modal('show');
-            });
-
-            $("#btnHideModal").click(function () {
-                $("#paymentModal").modal('hide');
-            });
+    $(document).ready(function () {
+        $("#btnShowModal").click(function () {
+            $("#paymentModal").modal('show');
         });
 
-        function CalculateDownPayment(e) {
-            var amount = $("#Amount").val();
-            
-            $("#DownPayment").val((amount * e.value) / 100);
 
+        // now make it draggable
+        // $('#paymentModal').draggable();
+
+
+        $("#btnHideModal").click(function () {
+            $("#paymentModal").modal('hide');
+        });
+        $('#Amount').val(100);
+        $('#Year').val("30");
+
+
+        document.getElementById("Rate").value = "4.00";
+        document.getElementById("DownPaymentPer").value = "20";
+
+        CalculateDownPayment(20);
+
+
+    });
+
+    function addCommas(nStr) {
+        nStr += '';
+        x = nStr.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        return x1 + x2;
+    }
+
+
+
+    function power(base, exponent) {
+        var result1 = 1;
+        for (var count = 0; count < exponent; count++)
+            result1 *= base;
+        return result1.toFixed(2);
+    }
+
+
+    function CalculateDownPayment(e) {
+        var container = $("#paymentModal").find("[data-valmsg-summary=true]"),
+         list = container.find("ul");
+        var valid = true;
+        var temp = "";
+        temp = $("#Amount").val();
+        var downpayment = $("#DownPayment").val();
+        if (temp == null || temp == "") {
+
+            if (list && list.length) {
+                if (valid) {
+                    container.addClass('validation-summary-errors');
+                }
+                list.find('#Aempty').remove();
+                $("<li id='Aempty' />").html('The Amount field is required.').appendTo(list);
+                $('#Amount').addClass('input-validation-error');
+                valid = false;
+            }
+        }
+        else if(isNaN(temp.replace(",","")))
+        {
+            if (list && list.length) {
+                if (valid) {
+                    container.addClass('validation-summary-errors');
+                }
+                list.find('#Aempty').remove();
+                list.find('#Anan').remove();
+                $("<li id='Anan' />").html('The Amount should be number.').appendTo(list);
+                $('#Amount').addClass('input-validation-error');
+                valid = false;
+            }
+        }
+        else {
+            list.find('#Aempty').remove();
+            list.find('#Anan').remove();
+        }
+
+
+        if (downpayment == null || downpayment == "") {
+
+            if (list && list.length) {
+                if (valid) {
+                    container.addClass('validation-summary-errors');
+                }
+                list.find('#Aempty').remove();
+                $("<li id='Aempty' />").html('The down payment field is required.').appendTo(list);
+                $('#Amount').addClass('input-validation-error');
+                valid = false;
+            }
+        }
+        else if (isNaN(downpayment.replace(",", ""))) {
+            if (list && list.length) {
+                if (valid) {
+                    container.addClass('validation-summary-errors');
+                }
+                list.find('#Aempty').remove();
+                list.find('#Anan').remove();
+                $("<li id='Anan' />").html('The downpayment should be number.').appendTo(list);
+                $('#Amount').addClass('input-validation-error');
+                valid = false;
+            }
+        }
+        else {
+            list.find('#Aempty').remove();
+            list.find('#Anan').remove();
+        }
+
+        // percentage validation
+
+        //downpayment validation
+
+        //compare validation
+
+
+        if (valid) {
+           
+            var amount = removeCommas(temp);
+
+
+            $("#DownPayment").val(Math.floor((amount * e) / 100));
 
             result();
         }
+    }
 
 
+    function Interestchange() {
+        result();
+    }
 
-        function result() {
-            var amount = $("#Amount").val();
-            var DownPayment = $("#DownPayment").val();
-            var amount = $("#Amount").val();
-            var finalresult=0;
-            if (amount != null && amount != undefined && DownPayment != null) {
-                finalresult = amount / 10;
-            }
 
-            $("#result").text(finalresult);
+    function inverseCalculateDownPayment(e) {
+        var amount = removeCommas($("#Amount").val());
+        e = removeCommas(e);
+        var temp = ((e / amount) * 100).toFixed(2);
+        $("#DownPaymentPer").val(temp);
+
+
+        result();
+    }
+
+
+    function result() {
+        
+        var amount = removeCommas($("#Amount").val());
+
+        var DownPayment = removeCommas($("#DownPayment").val());
+        var year = $("#Year").val();
+        var rate = $("#Rate").val();
+
+        var MRate = rate / 1200;
+        var Mnum = year * 12;
+        var fterm = (1 + MRate);
+        var fresult = power(fterm, Mnum) - 1;
+
+        var finalresult = 0;
+        var sterm1 = (1 + MRate);
+        var ster2 = power(sterm1, Mnum);
+        var sresult = MRate * ster2;
+        var discount = fresult / sresult;
+        var Monthlypayment = (amount - DownPayment) / discount;
+
+        if (amount != null && amount != undefined && DownPayment != null && DownPayment != undefined && year != null && year != undefined && rate != null && rate != undefined) {
+
+            //var temp = addCommas(Monthlypayment.toFixed());
+            finalresult = '$ ' + addCommas(Monthlypayment.toFixed());
+
+
+            //$("#Result").val(addCommas(Monthlypayment.toFixed()));
+            $("#Result").text(finalresult);
         }
 
+
+
+
+        $("#Amount").val(addCommas(amount));
+
+        $("#DownPayment").val(addCommas(DownPayment));
+
+
+    }
+
+
+    function removeCommas(input) {
+        input = input.replace(/,/g, '');
+        return input;
+    }
 </script>  

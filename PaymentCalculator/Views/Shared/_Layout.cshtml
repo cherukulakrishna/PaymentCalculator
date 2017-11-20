@@ -6,7 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+   
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -29,8 +29,81 @@
             </div>
         </div>
     </div>
+
     <div class="container body-content">
-        @RenderBody()
+        <div class="row">
+            <div class="col-md-2">
+                <div id="wrapper" class="toggled">
+                    <div id="sidebar-wrapper">
+                        <div id="MainMenu">
+                            @Html.Label("Sort By:")
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select class="form-control" id="sort" name="sort" style="width:150px" onchange="sortchange(this)">
+                                        <option value="MOST">Most Popular</option>
+                                        <option value="NM">Name</option>
+
+                                    </select>
+                                </div>
+                                <div id="ascdrop" hidden="hidden" class="col-md-6">
+                                    <select class="form-control" style="width:100px" id="ascdrop" name="ascdrop">
+                                        <option value="A">ASC</option>
+                                        <option value="D">DSC</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="list-group panel">
+                            
+                                
+                                 
+                                
+                                <a href="#demo1" class="list-group-item list-group-item-success strong" style="background: #f7f7f7;" data-toggle="collapse"><i class="fa fa-photo"></i> Bed <i class="fa fa-caret-down"></i></a>
+                                <div class="collapse list-group-submenu" id="demo1">
+                                    <a href="#" class="list-group-item"><input type="checkbox">&nbsp; 1</a>
+                                    <a href="#" class="list-group-item"><input type="checkbox">&nbsp; 2</a>
+                                    <a href="#" class="list-group-item"><input type="checkbox">&nbsp; 3</a>
+                                    <a href="#" class="list-group-item"><input type="checkbox">&nbsp; 4</a>
+                                </div>
+                                <a href="#demo2" class="list-group-item list-group-item-success strong" style="background: #f7f7f7;" data-toggle="collapse"><i class="fa fa-photo"></i> Bath <i class="fa fa-caret-down"></i></a>
+                                <div class="collapse list-group-submenu" id="demo2">
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <label class="btn btn-primary active">
+                                            <input type="checkbox" checked autocomplete="off"> 1
+
+                                        </label>
+                                       
+                                        <label class="btn btn-primary">
+                                            <input type="checkbox" autocomplete="off"> 2
+                                        </label>
+                                        &nbsp;
+                                        <label class="btn btn-primary">
+                                            <input type="checkbox" autocomplete="off"> 3
+                                        </label>
+                                    </div>
+                                </div>
+                                <a href="#demo3" class="list-group-item list-group-item-success strong" style="background: #f7f7f7;" data-toggle="collapse"><i class="fa fa-photo"></i> Price <i class="fa fa-caret-down"></i></a>
+                                <div class="collapse list-group-submenu" id="demo3">
+                                    @*<div data-role="rangeslider">
+                                        
+                                        <input  type="range" name="price-min" id="price-min" value="200" min="0" max="1000">
+                                       
+                                        <input type="range" name="price-max" id="price-max" value="800" min="0" max="1000">
+                                    </div>
+
+                                    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                                    <div id="slider-range"></div>*@
+                                    <div class="slider"></div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10">
+                @RenderBody()
+            </div>
+        </div>
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
@@ -42,3 +115,39 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+<!-- include the jQuery and jQuery UI scripts -->
+<script src="https://code.jquery.com/jquery-2.1.1.js"></script>
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<script src="~/Scripts/UI_Scripts/jquery-ui-slider-pips.js"></script>
+<!-- plus a jQuery UI theme, here I use "flick" -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">
+<link href="~/Content/jquery-ui-slider-pips.css" rel="stylesheet" />
+<script>
+    function sortchange(e) {
+        if (e.value != "MOST") {
+            $("#ascdrop").show();
+
+        }
+        else {
+
+            $("#ascdrop").hide();
+        }
+    }
+
+   
+
+    $(".slider").slider({
+        min: 80000,
+        max: 300000,
+        range: true,
+        values: [80000, 300000],
+        step:50000,
+        slide: function (event, ui) {
+            $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+        }
+    }).slider("pips", {
+        rest: "label"
+    })
+        .slider("float");
+
+</script>
