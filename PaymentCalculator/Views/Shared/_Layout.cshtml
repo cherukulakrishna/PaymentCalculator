@@ -7,7 +7,9 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
    
+
 </head>
+
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -93,7 +95,8 @@
 
                                     <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
                                     <div id="slider-range"></div>*@
-                                    <div class="slider"></div>
+                                    <br />
+                                    <div class="slider" style="width:185px !important;"></div>
                                     </div>
                                 </div>
                         </div>
@@ -115,6 +118,7 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
 <!-- include the jQuery and jQuery UI scripts -->
 <script src="https://code.jquery.com/jquery-2.1.1.js"></script>
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
@@ -122,6 +126,32 @@
 <!-- plus a jQuery UI theme, here I use "flick" -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">
 <link href="~/Content/jquery-ui-slider-pips.css" rel="stylesheet" />
+
+<style type="text/css">
+    .ui-slider-horizontal .ui-state-default {
+      background:grey;
+          border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  
+  border-left: 10px solid ;
+
+   border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent; 
+  
+  border-right:10px solid ; 
+       
+    }
+    .ui-slider .ui-slider-handle { 
+        width: 10px; border-left: 5px solid transparent ;
+  border-right: 5px solid transparent;
+  
+  border-bottom: 5px solid black; }
+    ui-slider-handle hover{
+        color:white;
+        background-color:white;
+    }
+</style>
+
 <script>
     function sortchange(e) {
         if (e.value != "MOST") {
@@ -137,11 +167,11 @@
    
 
     $(".slider").slider({
-        min: 80000,
-        max: 300000,
+        min: 50,
+        max: 300,
         range: true,
-        values: [80000, 300000],
-        step:50000,
+        values: [50, 300],
+        step:50,
         slide: function (event, ui) {
             $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
         }

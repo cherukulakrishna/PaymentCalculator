@@ -39,10 +39,10 @@
                 labels: false,
                 /* [array], { first: "string", rest: [array], last: "string" }, false */
 
-                prefix: "",
+                prefix: "$",
                 /* "", string */
 
-                suffix: "",
+                suffix: "k",
                 /* "", string */
 
                 step: ( pips > 100 ) ? Math.floor( pips * 0.05 ) : 1,
@@ -591,10 +591,10 @@
                 labels: false,
                 /* [array], { first: "string", rest: [array], last: "string" }, false */
 
-                prefix: "",
+                prefix: "$",
                 /* "", string */
 
-                suffix: "",
+                suffix: "k",
                 /* "", string */
 
                 event: "slidechange slide",
